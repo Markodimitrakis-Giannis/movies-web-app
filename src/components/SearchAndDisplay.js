@@ -28,13 +28,13 @@ const OmdbResults = () => {
       let res = "";
       if (searchTerm.length !== 0) {
         res = await axios.get(
-          `http://www.omdbapi.com/?apikey=247de336&s=${searchTerm}&i=${movieId}&page=${page}`
+          `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBkey}&s=${searchTerm}&i=${movieId}&page=${page}`
         );
         res.data.Search ? setMovies(res.data.Search) : setMovies([]);
         setTotalPages(res.data.totalResults);
       } else if (movieId.length !== 0) {
         res = await axios.get(
-          `http://www.omdbapi.com/?apikey=247de336&i=${movieId}`
+          `http://www.omdbapi.com/?apikey=${process.env.OMDBkEY}&i=${movieId}`
         );
 
         res.data ? setMovies([res.data]) : setMovies([]);

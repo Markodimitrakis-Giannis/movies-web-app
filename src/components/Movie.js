@@ -32,7 +32,7 @@ function MovieDetails() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await axios.get(
-        `http://www.omdbapi.com/?apikey=247de336&i=${movieId}`
+        `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBkey}&i=${movieId}`
       );
 
       setMovie(res.data);
@@ -64,7 +64,7 @@ function MovieDetails() {
             <CardMedia
               component="img"
               sx={{ padding: "1em 1em 0 1em", objectFit: "contain" }}
-              height="50%"
+              height="38%"
               width={"70%"}
               image={movie.Poster}
               alt="green iguana"

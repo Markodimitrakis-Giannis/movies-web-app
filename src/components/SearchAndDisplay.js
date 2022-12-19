@@ -1,5 +1,6 @@
+import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
-import { Box, Pagination, Stack } from "@mui/material";
+import { Box, Pagination, Stack, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -29,23 +30,24 @@ const OmdbResults = () => {
         res = await axios.get(
           `http://www.omdbapi.com/?apikey=247de336&s=${searchTerm}&i=${movieId}&page=${page}`
         );
-        setMovies(res.data.Search);
+        res.data.Search ? setMovies(res.data.Search) : setMovies([]);
         setTotalPages(res.data.totalResults);
       } else if (movieId.length !== 0) {
         res = await axios.get(
           `http://www.omdbapi.com/?apikey=247de336&i=${movieId}`
         );
-        setMovies([res.data]);
+
+        res.data ? setMovies([res.data]) : setMovies([]);
         setTotalPages(1);
       } else {
-        setMovies(0);
+        setMovies([]);
         setTotalPages(0);
       }
     };
     fetchDataName();
   }, [page, searchTerm, movieId]);
 
-  const handlePageChange = (event, page) => {
+  const handlePageChange = (page) => {
     setPage(page);
   };
   const handleChangeInSearchTerm = (event) => {
@@ -59,25 +61,41 @@ const OmdbResults = () => {
     clearIdSearch();
     IdForm.current.value = "";
     setPage(1);
-    setSearchTerm(SearchForm.current.value.trim());
-  };
-
-  const clearInputSearch = () => {
-    setSearchTerm("");
-    document.getElementById("form1").value = "";
-  };
-
-  const clearIdSearch = () => {
-    setMovieId("");
-    document.getElementById("form2").value = "";
+    if (checkIfEmpty(SearchForm.current.value)) {
+      setSearchTerm(SearchForm.current.value.trim());
+    } else {
+      setSearchTerm("");
+    }
   };
   const handleSearchSubmitId = () => {
     clearInputSearch();
     SearchForm.current.value = "";
     setPage(1);
-    setMovieId(IdForm.current.value.trim());
+
+    if (checkIfEmpty(IdForm.current.value)) {
+      setMovieId(IdForm.current.value.trim());
+    } else {
+      setMovieId("");
+    }
+  };
+  const clearInputSearch = () => {
+    setSearchTerm("");
+    SearchForm.current.value = "";
+    document.getElementById("form1").value = "";
   };
 
+  const clearIdSearch = () => {
+    setMovieId("");
+    IdForm.current.value = "";
+    document.getElementById("form2").value = "";
+  };
+  function checkIfEmpty(str) {
+    if (str || str?.trim() === "") {
+      return true;
+    } else {
+      return false;
+    }
+  }
   return (
     <Box>
       <Box
@@ -93,7 +111,8 @@ const OmdbResults = () => {
           justifyContent={"center"}
         >
           <TextField
-            label="Search by name or IMDb ID"
+            label="Search by Term"
+            required
             onChange={handleChangeInSearchTerm}
             id="form1"
             ref={SearchForm}
@@ -115,7 +134,7 @@ const OmdbResults = () => {
           <Button
             onClick={handleSearchSubmitName}
             variant="contained"
-            color="primary"
+            color="success"
             size="large"
             sx={{
               width: { sm: 100, md: 200 },
@@ -125,6 +144,20 @@ const OmdbResults = () => {
             endIcon={<SearchIcon />}
           >
             Search
+          </Button>
+          <Button
+            onClick={clearInputSearch}
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{
+              width: { sm: 70, md: 140 },
+              height: 45,
+              marginLeft: "5px",
+            }}
+            endIcon={<ClearIcon />}
+          >
+            Clear
           </Button>
         </Box>
       </Box>
@@ -141,8 +174,9 @@ const OmdbResults = () => {
           justifyContent={"center"}
         >
           <TextField
-            label="Search by name or IMDb ID"
+            label="Search by  IMDb ID"
             onChange={handleChangeInSearchId}
+            required
             ref={IdForm}
             id="form2"
             sx={{
@@ -163,7 +197,7 @@ const OmdbResults = () => {
           <Button
             onClick={handleSearchSubmitId}
             variant="contained"
-            color="primary"
+            color="success"
             size="large"
             sx={{
               width: { sm: 100, md: 200 },
@@ -174,26 +208,50 @@ const OmdbResults = () => {
           >
             Search by Id
           </Button>
+          <Button
+            onClick={clearIdSearch}
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{
+              width: { sm: 70, md: 140 },
+              height: 45,
+              marginLeft: "5px",
+            }}
+            endIcon={<ClearIcon />}
+          >
+            Clear
+          </Button>
         </Box>
       </Box>
       <Stack spacing={2} margin="2% 2%" alignContent={"center"}>
         <TableContainer component={Paper}>
-          <Table>
+          <Table sx={{ backgroundColor: "lightgray" }}>
             <TableHead>
               <TableRow
                 sx={{
-                  backgroundColor: "gray",
+                  backgroundColor: "lightcoral",
                 }}
               >
-                <TableCell align="center">Title</TableCell>
-                <TableCell align="center">Year</TableCell>
-                <TableCell align="center">Imdb ID</TableCell>
-                <TableCell align="center">Type</TableCell>
-                <TableCell align="center">See Details</TableCell>
+                <TableCell align="center">
+                  <Typography fontFamily={"Roboto"}>Title</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography fontFamily={"Roboto"}>Year</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography fontFamily={"Roboto"}>Imdb Id</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography fontFamily={"Roboto"}>Type</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography fontFamily={"Roboto"}>Movie Page</Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {movies &&
+              {movies ? (
                 movies.map((movie) => (
                   <TableRow key={movie.imdbID}>
                     <TableCell align="center">{movie.Title}</TableCell>
@@ -202,21 +260,40 @@ const OmdbResults = () => {
                     <TableCell align="center">{movie.Type}</TableCell>
                     <TableCell align="center">
                       {movie.imdbID ? (
-                        <Link to={`/Movie/${movie.imdbID}`}>
-                          Click to see Details
+                        <Link
+                          to={`/Movie/${movie.imdbID}`}
+                          style={{
+                            color: "inherit",
+                            textDecoration: "inherit",
+                          }}
+                        >
+                          <Button
+                            color="secondary"
+                            disabled={false}
+                            size="medium"
+                            variant="contained"
+                          >
+                            Take Me
+                          </Button>
                         </Link>
                       ) : (
                         <></>
                       )}
                     </TableCell>
                   </TableRow>
-                ))}
+                ))
+              ) : (
+                <TableRow key={movieId}>
+                  <TableCell align="center">No Results</TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
         <Box display="flex" justifyContent={"center"} alignItems="center">
           <Pagination
             variant="outlined"
+            color="secondary"
             shape="rounded"
             count={
               Math.ceil(totalPages / 10) > 0 ? Math.ceil(totalPages / 10) : 0

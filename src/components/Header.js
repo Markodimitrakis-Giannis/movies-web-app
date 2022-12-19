@@ -7,7 +7,7 @@ function Header() {
   return (
     <Box bgcolor="yellow">
       <Box display={"flex"} alignItems="start" justifyItems={"center"}>
-        <IconButton color="primary" aria-label="Home" size="medium">
+        <IconButton color="primary" aria-label="Home" size="large">
           <Link to={`/`}>
             <HomeIcon />
           </Link>
@@ -18,8 +18,8 @@ function Header() {
         alignItems={"center"}
         justifyContent={"center"}
         flexDirection={"row"}
-        paddingBottom="50px"
-        marginBottom={"50px"}
+        paddingBottom="25px"
+        marginBottom={"25px"}
         alignSelf="center"
       >
         <Box>
@@ -32,7 +32,7 @@ function Header() {
             Movies App
           </Typography>
         </Box>
-        <Box margin="4% 1%">
+        <Box margin="2% 1%">
           <MovieIcon
             fontWeight="bold"
             marginLeft="auto"

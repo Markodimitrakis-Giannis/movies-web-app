@@ -1,5 +1,6 @@
 import { Container, CssBaseline } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
+import Error from "./components/Error";
 import Header from "./components/Header";
 import MovieDetails from "./components/Movie";
 import OmdbResults from "./components/SearchAndDisplay";
@@ -35,7 +36,15 @@ function App() {
               </>
             }
           />
-          1
+          <Route
+            path="*"
+            element={
+              <>
+                <Header />
+                <Error />
+              </>
+            }
+          />
         </Routes>
       </Container>
     </>

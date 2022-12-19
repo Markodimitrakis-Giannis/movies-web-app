@@ -47,7 +47,7 @@ const OmdbResults = () => {
     fetchDataName();
   }, [page, searchTerm, movieId]);
 
-  const handlePageChange = (page) => {
+  const handlePageChange = (event, page) => {
     setPage(page);
   };
   const handleChangeInSearchTerm = (event) => {

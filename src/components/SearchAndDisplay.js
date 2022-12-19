@@ -34,7 +34,7 @@ const OmdbResults = () => {
         setTotalPages(res.data.totalResults);
       } else if (movieId.length !== 0) {
         res = await axios.get(
-          `http://www.omdbapi.com/?apikey=${process.env.OMDBkEY}&i=${movieId}`
+          `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDBkey}&i=${movieId}`
         );
 
         res.data ? setMovies([res.data]) : setMovies([]);

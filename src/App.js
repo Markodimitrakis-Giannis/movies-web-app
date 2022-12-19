@@ -21,7 +21,7 @@ function App() {
       >
         <Routes>
           <Route
-            path="/movies-web-app"
+            path="/"
             element={
               <>
                 <Header /> <OmdbResults />
@@ -29,7 +29,7 @@ function App() {
             }
           />
           <Route
-            path="/movies-web-app/Movie/:id"
+            path="/Movie/:id"
             element={
               <>
                 <Header /> <MovieDetails />
@@ -37,7 +37,7 @@ function App() {
             }
           />
           <Route
-            path="movies-web-app/*"
+            path="*"
             element={
               <>
                 <Header />

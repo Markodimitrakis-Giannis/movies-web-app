@@ -261,7 +261,7 @@ const OmdbResults = () => {
                     <TableCell align="center">
                       {movie.imdbID ? (
                         <Link
-                          to={`/movies-web-app/Movie/${movie.imdbID}`}
+                          to={`/Movie/${movie.imdbID}`}
                           style={{
                             color: "inherit",
                             textDecoration: "inherit",

@@ -8,7 +8,7 @@ function Header() {
     <Box bgcolor="yellow">
       <Box display={"flex"} alignItems="start" justifyItems={"center"}>
         <IconButton color="primary" aria-label="Home" size="large">
-          <Link to={`/movies-web-app/`}>
+          <Link to={`/`}>
             <HomeIcon />
           </Link>
         </IconButton>
